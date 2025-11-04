@@ -1,29 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface CircularCountdownProps {
   duration: number;
   size?: number;
   strokeWidth?: number;
+  onComplete?: () => void;
 }
 
 const CircularCountdown: React.FC<CircularCountdownProps> = ({
   duration,
   size = 120,
   strokeWidth = 10,
+  onComplete,
 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
   const [timeLeft, setTimeLeft] = useState(duration);
+  const hasCompletedRef = useRef(false);
 
   useEffect(() => {
-    if (timeLeft <= 0) return;
+    if (timeLeft <= 0) {
+      if (!hasCompletedRef.current && onComplete) {
+        hasCompletedRef.current = true;
+        onComplete();
+      }
+      return;
+    }
     const interval = setInterval(() => {
       setTimeLeft((prev) => Math.max(prev - 1, 0));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeLeft]);
+  }, [timeLeft, onComplete]);
+
+  useEffect(() => {
+    hasCompletedRef.current = false;
+    setTimeLeft(duration);
+  }, [duration]);
 
   const progress = timeLeft / duration;
   const strokeDashoffset = circumference * (1 - progress);
