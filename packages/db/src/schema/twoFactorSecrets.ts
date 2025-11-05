@@ -1,4 +1,4 @@
-import { pgTable, uuid, boolean, timestamp, text } from "drizzle-orm/pg-core";
+import { pgTable, uuid, boolean, timestamp, text, integer } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 import {user} from "./auth";
 
@@ -8,7 +8,9 @@ export const twoFactorSecretsTable = pgTable("two_factor_secrets", {
   secret_key: text("secret_key").notNull(),
   issuer: text("issuer").notNull(),
   label: text("label").notNull(),
+  digits: integer("digits").notNull(),
   algorithm: text("algorithm").notNull(),
+  period: integer("period").notNull(),
   is_2fa_enabled: boolean("is_2fa_enabled").notNull().default(false),
   enabled_at: timestamp("enabled_at", { withTimezone: true }),
   created_at: timestamp("created_at", { withTimezone: true }).notNull().default(sql`now()`),
