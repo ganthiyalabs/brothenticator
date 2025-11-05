@@ -1,5 +1,6 @@
 import { protectedProcedure, publicProcedure, router } from "../index";
 import { recoveryCodesRouter } from "./recoverycodes";
+import { qrScannerRouter } from "./qrcodescanner";
 
 export const appRouter = router({
 	healthCheck: publicProcedure.query(() => {
@@ -12,5 +13,6 @@ export const appRouter = router({
 		};
 	}),
 	recoveryCodes: recoveryCodesRouter,
+  qrScanner: qrScannerRouter,
 });
 export type AppRouter = typeof appRouter;

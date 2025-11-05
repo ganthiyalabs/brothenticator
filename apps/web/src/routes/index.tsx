@@ -22,7 +22,8 @@ export const Route = createFileRoute("/")({
 });
 
 function HomeComponent() {
-	const recoveryCodesMutation = useMutation(trpc.recoveryCodes.generate.mutationOptions());
+	const recoveryCodesMutationOptions = trpc.recoveryCodes.generate.mutationOptions();
+  const recoveryCodesMutation  = useMutation(recoveryCodesMutationOptions)
 	const [query, setQuery] = useState("");
 
 	const recoveryCodes = recoveryCodesMutation.data ?? [];
@@ -30,7 +31,7 @@ function HomeComponent() {
 	const handleGenerate = () => {
 		recoveryCodesMutation.mutate(undefined, {
 			onSuccess: (data) => {
-				// Codes are automatically updated via mutation.data
+
 			},
 		});
 	};
